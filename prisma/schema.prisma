@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+    previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model User {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  fullName      String
+  email         String      @unique
+  password      String
+  role          String      @default("USER")
+  image         String?
+}
+
+enum Role {
+  USER
+  ADMIN
+  VENUEOWNER
+  VENUEMANAGER
+  EMPLOYEE
+}
+
+enum VenueType {
+  RESTAURANT
+  BAR
+  BEACH
+}
+
+model Company {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  address      String
+  description  String?
+  venues       Venue[]      @relation("CompanyVenues")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Venue {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  address      String
+  description  String?
+  type:        String       @default("RESTAURANT")
+  companyId    String
+  company      Company      @relation("CompanyVenues", fields: [companyId], references: [id])
+  menus        Menu[]       @relation("VenueMenus")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Menu {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String?
+  venueId      String
+  venue        Venue        @relation("VenueMenus", fields: [venueId], references: [id]) 
+  menuItems    MenuItem[]   @relation("MenuItems")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model MenuItem {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  price       Float
+  menuId      String
+  menu        Menu          @relation("MenuItems", fields: [menuId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
