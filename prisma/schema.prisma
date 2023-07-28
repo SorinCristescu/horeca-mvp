@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-    previewFeatures = ["mongoDb"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
 }
 
 datasource db {
@@ -9,12 +9,12 @@ datasource db {
 }
 
 model User {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  fullName      String
-  email         String      @unique
-  password      String
-  role          String      @default("USER")
-  image         String?
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  fullName String
+  email    String  @unique
+  password String
+  role     String  @default("USER")
+  image    String?
 }
 
 enum Role {
@@ -32,46 +32,81 @@ enum VenueType {
 }
 
 model Company {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  address      String
-  description  String?
-  venues       Venue[]      @relation("CompanyVenues")
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  address     String
+  description String?
+  venues      Venue[]  @relation("CompanyVenues")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Venue {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  address      String
-  description  String?
-  type:        String       @default("RESTAURANT")
-  companyId    String
-  company      Company      @relation("CompanyVenues", fields: [companyId], references: [id])
-  menus        Menu[]       @relation("VenueMenus")
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  address     String
+  description String?
+  type        String   @default("RESTAURANT")
+  companyId   String
+  company     Company  @relation("CompanyVenues", fields: [companyId], references: [id])
+  menus       Menu[]   @relation("VenueMenus")
+  areas       Area[]   @relation("VenueAreas")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Menu {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  description  String?
-  venueId      String
-  venue        Venue        @relation("VenueMenus", fields: [venueId], references: [id]) 
-  menuItems    MenuItem[]   @relation("MenuItems")
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  venueId     String
+  venue       Venue      @relation("VenueMenus", fields: [venueId], references: [id])
+  menuItems   MenuItem[] @relation("MenuItems")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model MenuItem {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
   price       Float
   menuId      String
-  menu        Menu          @relation("MenuItems", fields: [menuId], references: [id])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  menu        Menu     @relation("MenuItems", fields: [menuId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Area {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  venueId     String
+  venue       Venue    @relation("VenueAreas", fields: [venueId], references: [id])
+  tables      Table[]  @relation("AreaTables")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Table {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  seats       String
+  areaId      String
+  area        Area     @relation("AreaTables", fields: [areaId], references: [id])
+  orders      Order[]  @relation("TableOrders")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  tableId     String
+  table       Table    @relation("TableOrders", fields: [tableId], references: [id])
+  open        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
