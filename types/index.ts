@@ -1,21 +1,13 @@
-export interface Step {
-  title?: string;
-  component: React.ReactElement;
-}
-
 export interface NavButton {
   title?: string;
-  style?: React.CSSProperties;
+  variant?: string;
+  classname?: string;
 }
 
 export interface MultiStepProps {
-  stepCustomClass?: string;
   showNavigation?: boolean;
-  showTitles?: boolean;
-  direction?: "row" | "column";
-  activeStep?: number;
+  defaultActiveStep?: number;
   children?: React.ReactElement[];
-  steps?: Step[];
   prevButton?: NavButton;
   nextButton?: NavButton;
 }
