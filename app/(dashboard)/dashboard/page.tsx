@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { Modal } from "@/components/ui/modal";
-import { useCompanyModal } from "@/hooks/useStoreModal";
+import { useVenueModal } from "@/hooks/useVenueModal";
 
 export default function Dashboard() {
-  const onOpen = useCompanyModal((state) => state.onOpen);
-  const isOpen = useCompanyModal((state) => state.isOpen);
+  const onOpen = useVenueModal((state) => state.onOpen);
+  const isOpen = useVenueModal((state) => state.isOpen);
 
   useEffect(() => {
     if (!isOpen) {

@@ -34,7 +34,14 @@ enum VenueType {
 model Company {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  email       String
+  phone       String
+  website     String?
   address     String
+  city        String
+  state       String
+  country     String
+  zip         String
   description String?
   venues      Venue[]  @relation("CompanyVenues")
   createdAt   DateTime @default(now())
@@ -45,6 +52,13 @@ model Venue {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   address     String
+  city        String
+  state       String
+  country     String
+  zip         String
+  website     String?
+  phone       String?
+  email       String?
   description String?
   type        String   @default("RESTAURANT")
   companyId   String

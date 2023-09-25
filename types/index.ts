@@ -2,14 +2,12 @@ export interface NavButton {
   title?: string;
   variant?: string;
   classname?: string;
+  onClick?: () => void;
 }
 
 export interface MultiStepProps {
-  showNavigation?: boolean;
-  defaultActiveStep?: number;
-  children?: React.ReactElement[];
-  prevButton?: NavButton;
-  nextButton?: NavButton;
+  activeStep: number;
+  steps: number[];
 }
 
 export interface IUser {
@@ -21,4 +19,10 @@ export interface IUser {
 export interface LoginUserParams {
   email: string;
   password: string;
+}
+
+export interface useModalProps {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }

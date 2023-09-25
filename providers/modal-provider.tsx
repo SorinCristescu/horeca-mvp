@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { CompanyModal } from "@/components/modals/company-modal";
+import { VenueModal } from "@/components/modals/venue-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -18,6 +19,7 @@ export const ModalProvider = () => {
   return (
     <>
       <CompanyModal />
+      <VenueModal />
     </>
   );
 };
